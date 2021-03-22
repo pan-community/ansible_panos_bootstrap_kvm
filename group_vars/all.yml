@@ -1,0 +1,14 @@
+vnfs:
+  - hostname: panos01
+    ip_address:  10.0.0.11
+    netmask: 255.255.255.0
+    default_gateway: 10.0.0.1
+    vm_auth_key: some_auth_key_from_panorama
+    panorama_server: 10.0.0.253
+    template_name: template_name
+    device_group: staging
+    dns_primary: 8.8.8.8
+    dns_secondary: 4.4.4.4
+    auth_code: VM Auth Code
+    admin_username: notadmin
+    admin_password: SUPER SECRET

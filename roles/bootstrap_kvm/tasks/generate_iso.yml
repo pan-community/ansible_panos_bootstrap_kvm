@@ -1,0 +1,49 @@
+---
+- name: Create the bootstrapping directory structure
+  file:
+    path: "{{ bts.path }}/{{ item.f }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - { f: "bts" }
+    - { f: "bts/config" }
+    - { f: "bts/license" }
+    - { f: "bts/software" }
+    - { f: "bts/content" }
+
+- name: Create the init-cfg.txt file and add the bootstrapping info.
+  lineinfile:
+    dest: "{{ bts.path }}/bts/config/init-cfg.txt"
+    state: present
+    create: yes
+    line: "{{ item.line }}"
+  with_items:
+    - { line: "type=static" }
+    - { line: "ip-address={{ vnf.ip_address }}" }
+    - { line: "default-gateway={{ vnf.default_gateway }}" }
+    - { line: "netmask={{ vnf.netmask }}" }
+    - { line: "hostname={{ vnf.hostname }}" }
+    - { line: "vm-auth-key={{ vnf.vm_auth_key }}" }
+    - { line: "panorama-server={{ vnf.panorama_server }}" }
+    - { line: "tplname={{ vnf.template_name }}" }
+    - { line: "dgname={{ vnf.device_group }}" }
+    - { line: "dns-primary={{ vnf.dns_primary }}" }
+    - { line: "dns-secondary={{ vnf.dns_secondary }}" }
+
+- name: Update sshd configuration safely, avoid locking yourself out
+  ansible.builtin.template:
+    src: bootstrap.xml
+    dest: "{{ bts.path }}/bts/config/bootstrap.xml"
+
+- name: Create license Authcode file and add the authcode
+  lineinfile:
+    dest: "{{ bts.path }}/bts/license/authcodes"
+    state: present
+    create: yes
+    line: "{{ vnf.auth_code }}"
+- name: Burn an ISO image (MacOS hdiutil)
+  command: hdiutil makehybrid -o {{ bts.path }}/bts_{{ vnf.ip_address }}.iso {{ bts.path }}/bts -iso -joliet
+  when: ansible_os_family == "Darwin"
+- name: Burn an ISO image (Linux mkisofs)
+  command: mkisofs -J -o {{ bts.path }}/bts_{{ vnf.ip_address }}.iso {{ bts.path }}/bts
+  when: ansible_os_family == "RedHat" or ansible_os_family == "Debian"

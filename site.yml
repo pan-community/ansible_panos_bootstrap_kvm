@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  tasks:
+    - name: Build Bootstrap ISOs
+      include_role:
+        name: bootstrap_kvm
+      vars:
+        vnf: "{{ item }}"
+      with_items: '{{ vnfs }}'

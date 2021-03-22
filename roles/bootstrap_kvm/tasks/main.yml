@@ -1,0 +1,3 @@
+---
+# tasks file for bootstrap_kvm
+- include: generate_iso.yml
