@@ -1,9 +1,0 @@
-# This example CSV file holds data for each of your VNFs you need to bootstrap and deploy
-# Each row is a host to be bootstrapped along with all required data for each deployment
-# hostname, ip_address, default_gateway, netmask, vm-auth-key, panorama-server, template_name, device_group_name, dns,autocode
-panos01,10.10.10.11,10.10.10.1,255.255.255.0,some_auth_key,10.10.10.255,staging_tmp,staging_group,8.8.8.8,SOMEAUTHCODE
-panos02,10.10.10.12,10.10.10.1,255.255.255.0,some_auth_key,10.10.10.255,staging_tmp,staging_group,8.8.8.8,SOMEAUTHCODE
-panos03,10.10.10.13,10.10.10.1,255.255.255.0,some_auth_key,10.10.10.255,staging_tmp,staging_group,8.8.8.8,SOMEAUTHCODE
-panos04,10.10.10.14,10.10.10.1,255.255.255.0,some_auth_key,10.10.10.255,staging_tmp,staging_group,8.8.8.8,SOMEAUTHCODE
-panos05,10.10.10.15,10.10.10.1,255.255.255.0,some_auth_key,10.10.10.255,staging_tmp,staging_group,8.8.8.8,SOMEAUTHCODE
-panos06,10.10.10.16,10.10.10.1,255.255.255.0,some_auth_key,10.10.10.255,staging_tmp,staging_group,8.8.8.8,SOMEAUTHCODE
