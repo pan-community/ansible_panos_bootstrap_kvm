@@ -1,19 +1,21 @@
 ---
+- name: Cleanup any previous bootstrapping directory structure
+  file:
+    path: "{{ bts_path }}"
+    state: absent
+
 - name: Create the bootstrapping directory structure
   file:
-    path: "{{ bts.path }}/{{ item.f }}"
+    path: "{{ bts_path }}/{{ iso_folder }}"
     state: directory
     mode: 0755
-  with_items:
-    - { f: "bts" }
-    - { f: "bts/config" }
-    - { f: "bts/license" }
-    - { f: "bts/software" }
-    - { f: "bts/content" }
+  loop: "{{ bts_iso_folders }}"
+  loop_control:
+    loop_var: iso_folder
 
 - name: Create the init-cfg.txt file and add the bootstrapping info.
   lineinfile:
-    dest: "{{ bts.path }}/bts/config/init-cfg.txt"
+    dest: "{{ bts_initcfg_filespec }}"
     state: present
     create: yes
     line: "{{ item.line }}"
@@ -30,20 +32,24 @@
     - { line: "dns-primary={{ vnf.dns_primary }}" }
     - { line: "dns-secondary={{ vnf.dns_secondary }}" }
 
-- name: Update sshd configuration safely, avoid locking yourself out
+- name: Generate Bootstrap XML
   ansible.builtin.template:
     src: bootstrap.xml
-    dest: "{{ bts.path }}/bts/config/bootstrap.xml"
+    dest: "{{ bts_bootstrap_filespec }}"
+  when: vnf.admin_password != None and vnf.admin_password | length > 0
 
 - name: Create license Authcode file and add the authcode
   lineinfile:
-    dest: "{{ bts.path }}/bts/license/authcodes"
+    dest: "{{ bts_authcodes_filespec }}"
     state: present
     create: yes
     line: "{{ vnf.auth_code }}"
+  when: vnf.auth_code != None and vnf.auth_code | length > 0
+
 - name: Burn an ISO image (MacOS hdiutil)
-  command: hdiutil makehybrid -o {{ bts.path }}/bts_{{ vnf.ip_address }}.iso {{ bts.path }}/bts -iso -joliet
+  command: hdiutil makehybrid -o {{ bts_iso_image_filespec }} {{ bts_path }} -iso -joliet
   when: ansible_os_family == "Darwin"
+
 - name: Burn an ISO image (Linux mkisofs)
-  command: mkisofs -J -o {{ bts.path }}/bts_{{ vnf.ip_address }}.iso {{ bts.path }}/bts
+  command: mkisofs -J -o {{ bts_iso_image_filespec }} {{ bts_path }}
   when: ansible_os_family == "RedHat" or ansible_os_family == "Debian"
