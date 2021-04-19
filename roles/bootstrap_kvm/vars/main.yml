@@ -1,4 +1,24 @@
 ---
 # vars file for bootstrap_kvm
-bts:
-  path: '/tmp'
+temp_root: "/tmp"
+bts_folder_name: "bts"
+
+bts_path: '{{ temp_root }}/{{ bts_folder_name }}'
+
+bts_iso_config_folder: "config"
+bts_iso_license_folder: "license"
+bts_iso_software_folder: "software"
+bts_iso_content_folder: "content"
+
+bts_iso_folders:
+  - "{{ bts_iso_config_folder }}"
+  - "{{ bts_iso_license_folder }}"
+  - "{{ bts_iso_software_folder }}"
+  - "{{ bts_iso_content_folder }}"
+
+bts_bootstrap_filespec: "{{ bts_path }}/{{ bts_iso_config_folder }}/bootstrap.xml"
+bts_initcfg_filespec: "{{ bts_path }}/{{ bts_iso_config_folder }}/init-cfg.txt"
+bts_authcodes_filespec: "{{ bts_path }}/{{ bts_iso_license_folder }}/authcodes"
+
+bts_iso_image_filespec: "{{ temp_root }}/bts_{{ vnf.ip_address }}.iso"
+

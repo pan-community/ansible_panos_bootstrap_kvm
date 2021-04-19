@@ -6,6 +6,6 @@
     - name: Build Bootstrap ISOs
       include_role:
         name: bootstrap_kvm
-      vars:
-        vnf: "{{ item }}"
-      with_items: '{{ vnfs }}'
+      loop: '{{ vnfs }}'
+      loop_control:
+        loop_var: vnf
