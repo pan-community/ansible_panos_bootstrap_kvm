@@ -3,7 +3,7 @@
     <mgt-config>
         <users>
             <entry name="{{ vnf.admin_username }}">
-                <phash>{{ vnf.admin_password | md5 }}</phash>
+                <phash>{{ vnf.admin_password | password_hash('md5') }}</phash>
                 <permissions>
                     <role-based>
                         <superuser>yes</superuser>
