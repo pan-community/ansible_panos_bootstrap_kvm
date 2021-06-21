@@ -65,6 +65,9 @@
                     <netmask>{{ vnf.netmask }}</netmask>
                     <default-gateway>{{ vnf.default_gateway }}</default-gateway>
                 </system>
+                <setting>
+                    <auto-mac-detect>{{ _auto_mac_detect }}</auto-mac-detect>
+                </setting>
             </deviceconfig>
             <vsys>
                 <entry name="vsys1">

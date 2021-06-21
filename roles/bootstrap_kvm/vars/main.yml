@@ -3,7 +3,7 @@
 temp_root: "/tmp"
 bts_folder_name: "bts"
 
-bts_path: '{{ temp_root }}/{{ bts_folder_name }}'
+bts_path: "{{ temp_root }}/{{ bts_folder_name }}"
 
 bts_iso_config_folder: "config"
 bts_iso_license_folder: "license"
@@ -22,3 +22,4 @@ bts_authcodes_filespec: "{{ bts_path }}/{{ bts_iso_license_folder }}/authcodes"
 
 bts_iso_image_filespec: "{{ temp_root }}/bts_{{ vnf.ip_address }}.iso"
 
+_auto_mac_detect: "{{ vnf.auto_mac_detect | default('yes', True) }}"
