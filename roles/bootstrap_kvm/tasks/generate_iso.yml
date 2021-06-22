@@ -19,6 +19,7 @@
     state: present
     create: yes
     line: "{{ item.line }}"
+    mode: 0644
   with_items:
     - { line: "type=static" }
     - { line: "ip-address={{ vnf.ip_address }}" }
@@ -36,6 +37,7 @@
   ansible.builtin.template:
     src: bootstrap.xml
     dest: "{{ bts_bootstrap_filespec }}"
+    mode: 0644
   when: vnf.admin_password != None and vnf.admin_password | length > 0
 
 - name: Create license Authcode file and add the authcode
@@ -44,6 +46,7 @@
     state: present
     create: yes
     line: "{{ vnf.auth_code }}"
+    mode: 0644
   when: vnf.auth_code != None and vnf.auth_code | length > 0
 
 - name: Burn an ISO image (MacOS hdiutil)
