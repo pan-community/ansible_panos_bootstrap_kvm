@@ -1,0 +1,13 @@
+image: registry.gitlab.com/panw-gse/as/panos_skillet_tools:latest
+
+before_script:
+  - python -V  # Print out python version for debugging
+
+test:
+  script:
+    - cd roles/bootstrap_kvm/tests
+    - chmod 744 .
+    - ansible-playbook test.yml -i inventory --syntax-check
+    - ansible-lint test.yml -v
+
+
